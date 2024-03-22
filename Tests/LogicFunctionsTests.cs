@@ -140,7 +140,7 @@ namespace Tests.Laba2AOIS
             CollectionAssert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod()]
         public void BinaryToDecimalTest()
         {
             // Arrange
@@ -154,7 +154,7 @@ namespace Tests.Laba2AOIS
             Assert.AreEqual(expectedDecimalValue, actualDecimalValue);
         }
 
-        [TestMethod]
+        [TestMethod()]
         public void PrintTruthTable_Test()
         {
             // Arrange
