@@ -5,31 +5,30 @@ namespace laba2AOIS
 {
     public class LogicFunctions
     {
-        public static bool LogicalAnd(bool a, bool b)
+        public static bool OperationAnd(bool a, bool b)
         {
             return a && b;
         }
 
-        public static bool LogicalOr(bool a, bool b)
+        public static bool OperationOr(bool a, bool b)
         {
             return a || b;
         }
 
-        public static bool LogicalNot(bool a)
+        public static bool OperationNot(bool a)
         {
             return !a;
         }
 
-        public static bool Implication(bool a, bool b)
+        public static bool OperationImplication(bool a, bool b)
         {
             return a ? b : true;
         }
 
-        public static bool Equivalention(bool a, bool b)
+        public static bool OperationEquivalence(bool a, bool b)
         {
             return (a && b) || (!a && !b);
         }
-
 
         private static int Prioritize(char op)
         {
@@ -87,69 +86,7 @@ namespace laba2AOIS
             return opz;
         }
 
-        public static List<bool> EvaluatePostfix(string postfixExpression, List<bool> values)
-        {
-            Stack<bool> st = new Stack<bool>();
-            List<bool> results = new List<bool>();
-            foreach (char c in postfixExpression)
-            {
-                if (Char.IsLetter(c))
-                {
-                    st.Push(values[c - 'a']);
-                }
-                else
-                {
-                    bool result = false;
-                    bool operand2 = st.Pop();
-                    if (c == '!')
-                    {
-                        result = LogicalNot(operand2);
-                    }
-                    else
-                    {
-                        bool operand1 = st.Pop();
-                        if (c == '&')
-                        {
-                            result = LogicalAnd(operand1, operand2);
-                        }
-                        else if (c == '|')
-                        {
-                            result = LogicalOr(operand1, operand2);
-                        }
-                        else if (c == '>')
-                        {
-                            result = Implication(operand1, operand2);
-                        }
-                        else if (c == '~')
-                        {
-                            result = Equivalention(operand1, operand2);
-                        }
-                    }
-                    st.Push(result);
-                    results.Add(result);
-                }
-            }
-            return results;
-        }
-
-        public static int ConvertBinaryToDecimal(List<int> binaryResult)
-        {
-            int decimalValue = 0;
-            int baseValue = 1;
-
-
-            for (int i = binaryResult.Count - 1; i >= 0; --i)
-            {
-                if (binaryResult[i] == 1)
-                {
-                    decimalValue += baseValue; 
-                }
-                baseValue *= 2;
-            }
-
-            return decimalValue;
-        }
-
+        
         public static void PrintTruthTable(int n, string expression)
         {
             string postfixExpression = OPZ(expression);
@@ -191,7 +128,7 @@ namespace laba2AOIS
                     Console.Write((value ? "1" : "0") + "\t");
                 }
 
-                List<bool> results = EvaluatePostfix(postfixExpression, values);
+                List<bool> results = CalculatePostfixExpression(postfixExpression, values);
                 foreach (bool result in results)
                 {
                     Console.Write((result ? "1" : "0") + "\t");
@@ -241,8 +178,71 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            binaryResult = ConvertBinaryToToDecimal(decimalResult);
+            binaryResult = ConvertBinaryToDecimal(decimalResult);
             Console.WriteLine("Decimal result: " + binaryResult);
+        }
+
+        public static List<bool> CalculatePostfixExpression(string postfixExpression, List<bool> values)
+        {
+            Stack<bool> st = new Stack<bool>();
+            List<bool> results = new List<bool>();
+            foreach (char c in postfixExpression)
+            {
+                if (Char.IsLetter(c))
+                {
+                    st.Push(values[c - 'a']);
+                }
+                else
+                {
+                    bool result = false;
+                    bool operand2 = st.Pop();
+                    if (c == '!')
+                    {
+                        result = OperationNot(operand2);
+                    }
+                    else
+                    {
+                        bool operand1 = st.Pop();
+                        if (c == '&')
+                        {
+                            result = OperationAnd(operand1, operand2);
+                        }
+                        else if (c == '|')
+                        {
+                            result = OperationOr(operand1, operand2);
+                        }
+                        else if (c == '~')
+                        {
+                            result = OperationEquivalence(operand1, operand2);
+                        }
+                        else if (c == '>')
+                        {
+                            result = OperationImplication(operand1, operand2);
+                        }
+                    }
+                    st.Push(result);
+                    results.Add(result);
+                }
+            }
+            return results;
+        }
+
+        public static int ConvertBinaryToDecimal(List<int> binaryResult)
+        {
+            int decimalValue = 0;
+            int baseValue = 1;
+
+
+            for (int i = binaryResult.Count - 1; i >= 0; --i)
+            {
+                if (binaryResult[i] == 1)
+                {
+                    decimalValue += baseValue;
+                }
+                baseValue *= 2;
+            }
+
+            return decimalValue;
         }
     }
 

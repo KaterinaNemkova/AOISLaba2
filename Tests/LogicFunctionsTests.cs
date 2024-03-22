@@ -23,7 +23,7 @@ namespace Tests.Laba2AOIS
 
             bool expected=false;
 
-            bool result = LogicFunctions.LogicalAnd(a, b);
+            bool result = LogicFunctions.OperationAnd(a, b);
 
             Assert.AreEqual(expected, result);
 
@@ -37,7 +37,7 @@ namespace Tests.Laba2AOIS
 
             bool expected = true;
 
-            bool result = LogicFunctions.LogicalOr(a, b);
+            bool result = LogicFunctions.OperationOr(a, b);
 
             Assert.AreEqual(expected, result);
         }
@@ -49,7 +49,7 @@ namespace Tests.Laba2AOIS
 
             bool expected = false;
 
-            bool result = LogicFunctions.LogicalNot(a);
+            bool result = LogicFunctions.OperationNot(a);
 
             Assert.AreEqual(expected, result);
 
@@ -64,7 +64,7 @@ namespace Tests.Laba2AOIS
 
             bool expected = false;
 
-            bool result = LogicFunctions.Implication(a, b);
+            bool result = LogicFunctions.OperationImplication(a, b);
 
             Assert.AreEqual(expected, result);
         }
@@ -77,7 +77,7 @@ namespace Tests.Laba2AOIS
 
             bool expected = false;
 
-            bool result = LogicFunctions.Implication(a, b);
+            bool result = LogicFunctions.OperationEquivalence(a, b);
 
             Assert.AreEqual(expected, result);
         }
@@ -105,13 +105,13 @@ namespace Tests.Laba2AOIS
         }
 
         [TestMethod()]
-        public void TestEvaluatePostfix()
+        public void TestCalculatePostfixExpression()
         {
             string postfixExpression = "ab|c!&";
             List<bool> values = new List<bool>() { false, false, false};
             List<bool> expected = new List<bool>() { false, true, false };
 
-            List<bool> result = LogicFunctions.EvaluatePostfix(postfixExpression, values);
+            List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
 
             CollectionAssert.AreEqual(expected, result);
         }
@@ -123,7 +123,7 @@ namespace Tests.Laba2AOIS
             List<bool> values = new List<bool>() { false, false,false};
             List<bool> expected = new List<bool>() { true, false};
 
-            List<bool> result = LogicFunctions.EvaluatePostfix(postfixExpression, values);
+            List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
 
             CollectionAssert.AreEqual(expected, result);
         }
@@ -135,7 +135,7 @@ namespace Tests.Laba2AOIS
             List<bool> values = new List<bool>() { false, false, false };
             List<bool> expected = new List<bool>() { true, true,true };
 
-            List<bool> result = LogicFunctions.EvaluatePostfix(postfixExpression, values);
+            List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
 
             CollectionAssert.AreEqual(expected, result);
         }
@@ -185,7 +185,5 @@ namespace Tests.Laba2AOIS
 
         }
 
-
-        
     }
 }
