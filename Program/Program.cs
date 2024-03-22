@@ -132,7 +132,7 @@ namespace laba2AOIS
             return results;
         }
 
-        public static int BinaryToDecimal(List<int> binaryResult)
+        public static int ConvertBinaryToDecimal(List<int> binaryResult)
         {
             int decimalValue = 0;
             int baseValue = 1;
@@ -153,7 +153,7 @@ namespace laba2AOIS
         public static void PrintTruthTable(int n, string expression)
         {
             string postfixExpression = OPZ(expression);
-            int totalRows = 1 << n;
+            int Rows = (int)Math.Pow(2, n);
             Console.WriteLine("Truth Table:");
             foreach (char c in expression)
             {
@@ -171,14 +171,14 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            string sknf = "";
-            string sdnf = "";
+            string SKNF = "";
+            string SDNF = "";
             List<int> sknfIndices = new List<int>();
             List<int> sdnfIndices = new List<int>();
             List<int> decimalResult = new List<int>();
             int binaryResult = 0;
 
-            for (int i = 0; i < totalRows; ++i)
+            for (int i = 0; i < Rows; ++i)
             {
                 List<bool> values = new List<bool>();
                 for (int j = 0; j < n; ++j)
@@ -200,32 +200,32 @@ namespace laba2AOIS
 
                 if (results[results.Count - 1] == false)
                 {
-                    sknf += "(";
+                    SKNF += "(";
                     for (int j = 0; j < n; ++j)
                     {
-                        sknf += (values[j] ? "!" : "") + (char)('a' + j) + (j < n - 1 ? " | " : "");
+                        SKNF += (values[j] ? "!" : "") + (char)('a' + j) + (j < n - 1 ? " | " : "");
                     }
-                    sknf += ") & ";
+                    SKNF += ") & ";
                     sknfIndices.Add(i);
                 }
                 else
                 {
-                    sdnf += "(";
+                    SDNF += "(";
                     for (int j = 0; j < n; ++j)
                     {
-                        sdnf += (values[j] ? "" : "!") + (char)('a' + j) + (j < n - 1 ? " & " : "");
+                        SDNF += (values[j] ? "" : "!") + (char)('a' + j) + (j < n - 1 ? " & " : "");
                     }
-                    sdnf += ") | ";
+                    SDNF += ") | ";
                     sdnfIndices.Add(i);
                 }
 
                 decimalResult.Add(results[results.Count - 1] ? 1 : 0);
             }
 
-            if (!string.IsNullOrEmpty(sknf)) sknf = sknf.Substring(0, sknf.Length - 3);
-            if (!string.IsNullOrEmpty(sdnf)) sdnf = sdnf.Substring(0, sdnf.Length - 3);
+            if (!string.IsNullOrEmpty(SKNF)) SKNF = SKNF.Substring(0, SKNF.Length - 3);
+            if (!string.IsNullOrEmpty(SDNF)) SDNF = SDNF.Substring(0, SDNF.Length - 3);
 
-            Console.WriteLine("SKNF: " + sknf);
+            Console.WriteLine("SKNF: " + SKNF);
             Console.Write("SKNF Indices: ");
             foreach (int index in sknfIndices)
             {
@@ -233,7 +233,7 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            Console.WriteLine("SDNF: " + sdnf);
+            Console.WriteLine("SDNF: " + SDNF);
             Console.Write("SDNF Indices: ");
             foreach (int index in sdnfIndices)
             {
@@ -241,7 +241,7 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            binaryResult = BinaryToDecimal(decimalResult);
+            binaryResult = ConvertBinaryToToDecimal(decimalResult);
             Console.WriteLine("Decimal result: " + binaryResult);
         }
     }

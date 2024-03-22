@@ -141,14 +141,14 @@ namespace Tests.Laba2AOIS
         }
 
         [TestMethod()]
-        public void BinaryToDecimalTest()
+        public void ConvertBinaryToDecimalTest()
         {
             // Arrange
             List<int> binaryResult = new List<int> { 1, 0, 1 }; // Бинарное представление числа
             int expectedDecimalValue = 5; // Ожидаемое десятичное значение
 
             // Act
-            int actualDecimalValue = LogicFunctions.BinaryToDecimal(binaryResult);
+            int actualDecimalValue = LogicFunctions.ConvertBinaryToDecimal(binaryResult);
 
             // Assert
             Assert.AreEqual(expectedDecimalValue, actualDecimalValue);
