@@ -86,7 +86,7 @@ namespace laba2AOIS
             return opz;
         }
 
-        
+
         public static void PrintTruthTable(int n, string expression)
         {
             string postfixExpression = OPZ(expression);
@@ -135,26 +135,7 @@ namespace laba2AOIS
                 }
                 Console.WriteLine();
 
-                if (results[results.Count - 1] == false)
-                {
-                    SKNF += "(";
-                    for (int j = 0; j < n; ++j)
-                    {
-                        SKNF += (values[j] ? "!" : "") + (char)('a' + j) + (j < n - 1 ? " | " : "");
-                    }
-                    SKNF += ") & ";
-                    sknfIndices.Add(i);
-                }
-                else
-                {
-                    SDNF += "(";
-                    for (int j = 0; j < n; ++j)
-                    {
-                        SDNF += (values[j] ? "" : "!") + (char)('a' + j) + (j < n - 1 ? " & " : "");
-                    }
-                    SDNF += ") | ";
-                    sdnfIndices.Add(i);
-                }
+                UpdateSKNFAndSDNF(results, values, n, i, ref SKNF, ref SDNF, sknfIndices, sdnfIndices);
 
                 decimalResult.Add(results[results.Count - 1] ? 1 : 0);
             }
@@ -182,6 +163,41 @@ namespace laba2AOIS
             Console.WriteLine("Decimal result: " + binaryResult);
         }
 
+        private static void UpdateSKNFAndSDNF(List<bool> results, List<bool> values, int n, int rowIndex, ref string SKNF, ref string SDNF, List<int> sknfIndices, List<int> sdnfIndices)
+        {
+            if (results[results.Count - 1] == false)
+            {
+                SKNF += ConstructSKNF(values, n);
+                sknfIndices.Add(rowIndex);
+            }
+            else
+            {
+                SDNF += ConstructSDNF(values, n);
+                sdnfIndices.Add(rowIndex);
+            }
+        }
+
+        private static string ConstructSKNF(List<bool> values, int n)
+        {
+            string sknf = "(";
+            for (int j = 0; j < n; ++j)
+            {
+                sknf += (values[j] ? "!" : "") + (char)('a' + j) + (j < n - 1 ? " | " : "");
+            }
+            sknf += ") & ";
+            return sknf;
+        }
+
+        private static string ConstructSDNF(List<bool> values, int n)
+        {
+            string sdnf = "(";
+            for (int j = 0; j < n; ++j)
+            {
+                sdnf += (values[j] ? "" : "!") + (char)('a' + j) + (j < n - 1 ? " & " : "");
+            }
+            sdnf += ") | ";
+            return sdnf;
+        }
         public static List<bool> CalculatePostfixExpression(string postfixExpression, List<bool> values)
         {
             Stack<bool> st = new Stack<bool>();

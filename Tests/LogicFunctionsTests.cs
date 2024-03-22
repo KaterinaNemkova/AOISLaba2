@@ -21,7 +21,7 @@ namespace Tests.Laba2AOIS
             bool a = false;
             bool b = true;
 
-            bool expected=false;
+            bool expected = false;
 
             bool result = LogicFunctions.OperationAnd(a, b);
 
@@ -42,9 +42,9 @@ namespace Tests.Laba2AOIS
             Assert.AreEqual(expected, result);
         }
 
-         [TestMethod()]
-         public void LogicalNotTest()
-         {
+        [TestMethod()]
+        public void LogicalNotTest()
+        {
             bool a = true;
 
             bool expected = false;
@@ -53,13 +53,13 @@ namespace Tests.Laba2AOIS
 
             Assert.AreEqual(expected, result);
 
-          }
+        }
 
-         [TestMethod()]
+        [TestMethod()]
 
-         public void ImlicationTest()
+        public void ImlicationTest()
         {
-            bool a = true; 
+            bool a = true;
             bool b = false;
 
             bool expected = false;
@@ -108,7 +108,7 @@ namespace Tests.Laba2AOIS
         public void TestCalculatePostfixExpression()
         {
             string postfixExpression = "ab|c!&";
-            List<bool> values = new List<bool>() { false, false, false};
+            List<bool> values = new List<bool>() { false, false, false };
             List<bool> expected = new List<bool>() { false, true, false };
 
             List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
@@ -117,11 +117,11 @@ namespace Tests.Laba2AOIS
         }
 
         [TestMethod()]
-        public void TestEvaluatePostfix2()
+        public void TestCalculatePostfixExpression2()
         {
             string postfixExpression = "ab>c&";
-            List<bool> values = new List<bool>() { false, false,false};
-            List<bool> expected = new List<bool>() { true, false};
+            List<bool> values = new List<bool>() { false, false, false };
+            List<bool> expected = new List<bool>() { true, false };
 
             List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
 
@@ -129,11 +129,11 @@ namespace Tests.Laba2AOIS
         }
 
         [TestMethod()]
-        public void TestEvaluatePostfix3()
+        public void TestCalculatePostfixExpression3()
         {
             string postfixExpression = "ab~c!|";
             List<bool> values = new List<bool>() { false, false, false };
-            List<bool> expected = new List<bool>() { true, true,true };
+            List<bool> expected = new List<bool>() { true, true, true };
 
             List<bool> result = LogicFunctions.CalculatePostfixExpression(postfixExpression, values);
 
@@ -184,6 +184,8 @@ namespace Tests.Laba2AOIS
             Assert.IsTrue(actualOutput.Contains(expectedDecimalResult));
 
         }
+
+
 
     }
 }
