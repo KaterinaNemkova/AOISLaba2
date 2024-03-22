@@ -261,26 +261,4 @@ namespace laba2AOIS
             return decimalValue;
         }
     }
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Enter expression : ");
-            string expression = Console.ReadLine();
-
-            HashSet<char> variables = new HashSet<char>();
-            foreach (char c in expression)
-            {
-                if (Char.IsLetter(c))
-                {
-                    variables.Add(c);
-                }
-            }
-
-            LogicFunctions.PrintTruthTable(variables.Count, expression);
-            Console.ReadLine();
-        }
-    }
-
 }
