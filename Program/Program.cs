@@ -86,11 +86,53 @@ namespace laba2AOIS
             return opz;
         }
 
-
-        public static void PrintTruthTable(int n, string expression)
+        public static void PrintLogicTable(int n, string expression)
         {
             string postfixExpression = OPZ(expression);
+            List<List<bool>> truthTable = GenerateTruthTable(n, expression, postfixExpression);
+            string SKNF = "";
+            string SDNF = "";
+            List<int> sknfIndices = new List<int>();
+            List<int> sdnfIndices = new List<int>();
+            List<int> decimalResult = new List<int>();
+
+            PopulateResultsAndIndices(truthTable, postfixExpression, n, ref SKNF, ref SDNF, sknfIndices, sdnfIndices, decimalResult);
+
+            PrintResults(expression, postfixExpression, truthTable, SKNF, SDNF, sknfIndices, sdnfIndices, decimalResult);
+        }
+
+        private static List<List<bool>> GenerateTruthTable(int n, string expression, string postfixExpression)
+        {
             int Rows = (int)Math.Pow(2, n);
+            List<List<bool>> truthTable = new List<List<bool>>();
+
+            for (int i = 0; i < Rows; ++i)
+            {
+                List<bool> values = new List<bool>();
+                for (int j = 0; j < n; ++j)
+                {
+                    values.Insert(0, (i & (1 << j)) != 0);
+                }
+                truthTable.Add(values);
+            }
+
+            return truthTable;
+        }
+
+        private static void PopulateResultsAndIndices(List<List<bool>> truthTable, string postfixExpression, int n, ref string SKNF, ref string SDNF, List<int> sknfIndices, List<int> sdnfIndices, List<int> decimalResult)
+        {
+            for (int rowIndex = 0; rowIndex < truthTable.Count; rowIndex++)
+            {
+                List<bool> row = truthTable[rowIndex];
+                List<bool> results = CalculatePostfixExpression(postfixExpression, row);
+                UpdateSKNFAndSDNF(results, row, n, rowIndex, ref SKNF, ref SDNF, sknfIndices, sdnfIndices);
+
+                decimalResult.Add(results[results.Count - 1] ? 1 : 0);
+            }
+        }
+
+        private static void PrintResults(string expression, string postfixExpression, List<List<bool>> truthTable, string SKNF, string SDNF, List<int> sknfIndices, List<int> sdnfIndices, List<int> decimalResult)
+        {
             Console.WriteLine("Truth Table:");
             foreach (char c in expression)
             {
@@ -108,36 +150,19 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            string SKNF = "";
-            string SDNF = "";
-            List<int> sknfIndices = new List<int>();
-            List<int> sdnfIndices = new List<int>();
-            List<int> decimalResult = new List<int>();
-            int binaryResult = 0;
-
-            for (int i = 0; i < Rows; ++i)
+            foreach (var row in truthTable)
             {
-                List<bool> values = new List<bool>();
-                for (int j = 0; j < n; ++j)
-                {
-                    values.Insert(0, (i & (1 << j)) != 0);
-                }
-
-                foreach (bool value in values)
+                foreach (bool value in row)
                 {
                     Console.Write((value ? "1" : "0") + "\t");
                 }
 
-                List<bool> results = CalculatePostfixExpression(postfixExpression, values);
+                List<bool> results = CalculatePostfixExpression(postfixExpression, row);
                 foreach (bool result in results)
                 {
                     Console.Write((result ? "1" : "0") + "\t");
                 }
                 Console.WriteLine();
-
-                UpdateSKNFAndSDNF(results, values, n, i, ref SKNF, ref SDNF, sknfIndices, sdnfIndices);
-
-                decimalResult.Add(results[results.Count - 1] ? 1 : 0);
             }
 
             if (!string.IsNullOrEmpty(SKNF)) SKNF = SKNF.Substring(0, SKNF.Length - 3);
@@ -159,9 +184,86 @@ namespace laba2AOIS
             }
             Console.WriteLine();
 
-            binaryResult = ConvertBinaryToDecimal(decimalResult);
+            int binaryResult = ConvertBinaryToDecimal(decimalResult);
             Console.WriteLine("Decimal result: " + binaryResult);
         }
+
+
+        //public static void PrintLogicTable(int n, string expression)
+        //{
+        //    string postfixExpression = OPZ(expression);
+        //    int Rows = (int)Math.Pow(2, n);
+        //    Console.WriteLine("Truth Table:");
+        //    foreach (char c in expression)
+        //    {
+        //        if (Char.IsLetter(c))
+        //        {
+        //            Console.Write(c + "\t");
+        //        }
+        //    }
+        //    foreach (char c in postfixExpression)
+        //    {
+        //        if (c == '&' || c == '|' || c == '!' || c == '>' || c == '~')
+        //        {
+        //            Console.Write(c + "\t");
+        //        }
+        //    }
+        //    Console.WriteLine();
+
+        //    string SKNF = "";
+        //    string SDNF = "";
+        //    List<int> sknfIndices = new List<int>();
+        //    List<int> sdnfIndices = new List<int>();
+        //    List<int> decimalResult = new List<int>();
+        //    int binaryResult = 0;
+
+        //    for (int i = 0; i < Rows; ++i)
+        //    {
+        //        List<bool> values = new List<bool>();
+        //        for (int j = 0; j < n; ++j)
+        //        {
+        //            values.Insert(0, (i & (1 << j)) != 0);
+        //        }
+
+        //        foreach (bool value in values)
+        //        {
+        //            Console.Write((value ? "1" : "0") + "\t");
+        //        }
+
+        //        List<bool> results = CalculatePostfixExpression(postfixExpression, values);
+        //        foreach (bool result in results)
+        //        {
+        //            Console.Write((result ? "1" : "0") + "\t");
+        //        }
+        //        Console.WriteLine();
+
+        //        UpdateSKNFAndSDNF(results, values, n, i, ref SKNF, ref SDNF, sknfIndices, sdnfIndices);
+
+        //        decimalResult.Add(results[results.Count - 1] ? 1 : 0);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(SKNF)) SKNF = SKNF.Substring(0, SKNF.Length - 3);
+        //    if (!string.IsNullOrEmpty(SDNF)) SDNF = SDNF.Substring(0, SDNF.Length - 3);
+
+        //    Console.WriteLine("SKNF: " + SKNF);
+        //    Console.Write("SKNF Indices: ");
+        //    foreach (int index in sknfIndices)
+        //    {
+        //        Console.Write(index + " ");
+        //    }
+        //    Console.WriteLine();
+
+        //    Console.WriteLine("SDNF: " + SDNF);
+        //    Console.Write("SDNF Indices: ");
+        //    foreach (int index in sdnfIndices)
+        //    {
+        //        Console.Write(index + " ");
+        //    }
+        //    Console.WriteLine();
+
+        //    binaryResult = ConvertBinaryToDecimal(decimalResult);
+        //    Console.WriteLine("Decimal result: " + binaryResult);
+        //}
 
         private static void UpdateSKNFAndSDNF(List<bool> results, List<bool> values, int n, int rowIndex, ref string SKNF, ref string SDNF, List<int> sknfIndices, List<int> sdnfIndices)
         {
@@ -261,4 +363,26 @@ namespace laba2AOIS
             return decimalValue;
         }
     }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter expression : ");
+            string expression = Console.ReadLine();
+
+            HashSet<char> variables = new HashSet<char>();
+            foreach (char c in expression)
+            {
+                if (Char.IsLetter(c))
+                {
+                    variables.Add(c);
+                }
+            }
+
+            LogicFunctions.PrintLogicTable(variables.Count, expression);
+            Console.ReadLine();
+        }
+    }
+
 }

@@ -173,7 +173,7 @@ namespace Tests.Laba2AOIS
             Console.SetOut(sw);
 
             // Act
-            LogicFunctions.PrintTruthTable(n, expression);
+            LogicFunctions.PrintLogicTable(n, expression);
 
             // Получаем вывод в виде строки
             string actualOutput = sw.ToString();
